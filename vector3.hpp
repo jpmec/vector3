@@ -49,9 +49,10 @@ public:
 	const vector3<T> operator > (const T s);
 
 	const vector3<T> operator < (const vector3<T>& v);	// element-wise comparion, return vector of 1 or 0 based on test
-	const vector3<T> operator > (const vector3<T>& v); 
+	const vector3<T> operator > (const vector3<T>& v);
 
 	bool operator == (const vector3<T>& v);				// test vector for equality
+	bool operator != (const vector3<T>& v);				// test vector for inequality
 
 	T* ptr(){return _v;} // return reference to array (use with caution)
 
@@ -144,7 +145,7 @@ T& vector3<T>::operator [] (const int i)
 template <class T>
 inline const vector3<T> vector3<T>::abs() const
 {
-    return vector3<T>(abs(_v[0]), abs(_v[1]), abs(_v[2]));
+    return vector3<T>(std::abs(_v[0]), std::abs(_v[1]), std::abs(_v[2]));
 }
 
 
@@ -165,8 +166,8 @@ inline const T vector3<T>::dot(const vector3<T>& v) const
 template <class T>
 inline const vector3<T> vector3<T>::cross(const vector3<T>& v) const
 {
-    return vector3<T>( 
-		(_v[1] * v[2]) - (_v[2] * v[1]), 
+    return vector3<T>(
+		(_v[1] * v[2]) - (_v[2] * v[1]),
 		(_v[2] * v[0]) - (_v[0] * v[2]),
 		(_v[0] * v[1]) - (_v[1] * v[0])
 	);
@@ -318,6 +319,25 @@ inline const vector3<T> vector3<T>::operator - ()
 }
 
 
+template <class T>
+inline bool vector3<T>::operator == (const vector3<T>& v)
+{
+  return    _v[0] == v[0]
+         && _v[1] == v[1]
+         && _v[2] == v[2];
+}
+
+
+template <class T>
+inline bool vector3<T>::operator != (const vector3<T>& v)
+{
+  return    _v[0] != v[0]
+         || _v[1] != v[1]
+         || _v[2] != v[2];
+}
+
+
+
 template<class T>
 inline const vector3<T> operator && (const vector3<T>& v1, const vector3<T>& v2)
 {
@@ -326,7 +346,7 @@ inline const vector3<T> operator && (const vector3<T>& v1, const vector3<T>& v2)
 
 
 template<class T>
-inline const vector3<T> operator || (const vector3<T>& v1, const vector3<T>& v2) 
+inline const vector3<T> operator || (const vector3<T>& v1, const vector3<T>& v2)
 {
 	return vector3<T>(v1[0]||v2[0], v1[1]||v2[1], v1[2]||v2[2]);
 }
@@ -386,5 +406,8 @@ inline const vector3<T> operator ^ (const vector3<T>& v1, const vector3<T>& v2)
 {
 	return v1.cross(v2);
 }
+
+
+
 
 #endif//VECTOR3_HPP_
